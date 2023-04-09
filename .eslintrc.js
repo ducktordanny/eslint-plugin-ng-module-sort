@@ -10,20 +10,22 @@ module.exports = {
   env: {
     node: true,
   },
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: 'module',
+    allowImportExportEverywhere: true
+  },
+  rules: {
+    'node/no-unsupported-features/es-syntax': [
+      'error',
+      {ignores: ['modules']},
+    ],
+    'node/no-unpublished-import': ['error', {ignores: ['modules']}]
+  },
   overrides: [
     {
-      files: ['lib/**/*.ts'],
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        sourceType: 'module',
-      },
-    },
-    {
       files: ['tests/**/*.ts'],
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        sourceType: 'module',
-      },
       env: { mocha: true },
     },
   ],

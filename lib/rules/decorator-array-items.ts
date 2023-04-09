@@ -21,15 +21,18 @@ const MODULE_PROPERTIES: Array<string> = [
   'bootstrap',
 ];
 
-const orderCheck = (elements: Array<Identifier>): boolean => {
+const orderCheck = (elements: Array<Identifier>, reverseSort: boolean): boolean => {
   const elementNames = elements.map(el => el.name);
   const orderedElementNames = [...elementNames].sort();
+  if (reverseSort) orderedElementNames.reverse();
   return JSON.stringify(elementNames) === JSON.stringify(orderedElementNames);
 };
 
-const orderFixer = (fixer: RuleFixer): RuleFix | null => {
-  // TODO implement
-  return null;
+const orderFixer = (fixer: RuleFixer, node: ArrayExpression, reverseSort: boolean): RuleFix => {
+  const elements = node.elements as Array<Identifier>;
+  const fix = elements.map(el => el.name).sort();
+  if (reverseSort) fix.reverse();
+  return fixer.replaceText(node, `[${fix.join(', ')}]`);
 };
 
 export const decoratorArrayItemsRule = ruleCreator({
@@ -44,11 +47,16 @@ export const decoratorArrayItemsRule = ruleCreator({
       wrongOrderOfDecoratorArrayItems: 'Run `eslint --fix .` to sort the members of {{ property }}.',
     },
     fixable: 'code',
-    schema: {},
+    schema: [
+      {reverseSort: false},
+    ],
   },
+
   create(context): RuleListener {
+    const reverseSort = context?.options?.[0]?.['reverseSort'] as boolean;
+
     return {
-      Decorator(node) {
+      Decorator(node): void {
         const callExp = node?.expression as CallExpression
         const decoratorName = (callExp?.callee as Identifier)?.name;
         if (!DECORATORS.some(dec => dec === decoratorName)) return;
@@ -67,21 +75,24 @@ export const decoratorArrayItemsRule = ruleCreator({
 
         knownProperties.forEach(prop => {
           const keyName = (prop.key as Identifier)?.name;
-          const elements = (prop.value as ArrayExpression).elements as Array<Identifier>;
-          const isOrdered = orderCheck(elements);
+          const arrayExpression = prop.value as ArrayExpression;
+          const elements = arrayExpression.elements as Array<Identifier>;
+          const isOrdered = orderCheck(elements, reverseSort);
           if (isOrdered) return;
+
           context.report({
-            node: prop,
+            node: arrayExpression,
             messageId: 'wrongOrderOfDecoratorArrayItems',
             data: {
               property: keyName,
             },
-            fix: orderFixer,
+            fix: (fixer) => orderFixer(fixer, arrayExpression, reverseSort),
           });
         });
       },
     };
   },
+
   defaultOptions: [],
 });
 
