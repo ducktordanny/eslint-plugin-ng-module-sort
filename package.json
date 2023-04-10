@@ -5,7 +5,9 @@
   "keywords": [
     "eslint",
     "eslintplugin",
-    "eslint-plugin"
+    "eslint-plugin",
+    "angular",
+    "nestjs"
   ],
   "author": "Daniel Lazar",
   "main": "./dist/lib/index.js",
@@ -43,5 +45,5 @@
   "peerDependencies": {
     "eslint": ">=7"
   },
-  "license": "ISC"
+  "license": "MIT"
 }
