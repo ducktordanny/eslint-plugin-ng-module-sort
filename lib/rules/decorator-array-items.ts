@@ -1,16 +1,6 @@
-import { ESLintUtils } from '@typescript-eslint/utils';
-import { CallExpression, ObjectExpression, Property, Identifier, ArrayExpression } from '@typescript-eslint/types/dist/generated/ast-spec';
-import { RuleFix, RuleFixer, RuleListener } from '@typescript-eslint/utils/dist/ts-eslint';
-
-const ruleCreator = ESLintUtils.RuleCreator((name) => `https://github.com/ducktordanny/eslint-plugin-ng-module-sort#${name}`);
-
-const DECORATORS: Array<string> = [
-  'NgModule',
-  'Component',
-  'Pipe',
-  'Decorator',
-  'Module',
-];
+import { Identifier, ArrayExpression, Decorator } from '@typescript-eslint/types/dist/generated/ast-spec';
+import { RuleContext, RuleFix, RuleFixer, RuleListener } from '@typescript-eslint/utils/dist/ts-eslint';
+import { getPropertiesOfDecorator, ruleCreator } from '../shared';
 
 const MODULE_PROPERTIES: Array<string> = [
   'imports',
@@ -48,26 +38,18 @@ export const decoratorArrayItemsRule = ruleCreator({
     },
     fixable: 'code',
     schema: [
-      {reverseSort: false},
+      { reverseSort: false },
     ],
   },
 
-  create(context): RuleListener {
+  create(context: RuleContext<'wrongOrderOfDecoratorArrayItems', Array<{reverseSort: boolean}>>): RuleListener {
     const reverseSort = context?.options?.[0]?.['reverseSort'] as boolean;
 
     return {
-      Decorator(node): void {
-        const callExp = node?.expression as CallExpression
-        const decoratorName = (callExp?.callee as Identifier)?.name;
-        if (!DECORATORS.some(dec => dec === decoratorName)) return;
+      Decorator(node: Decorator): void {
+        const properties = getPropertiesOfDecorator(node);
 
-        const arg = (callExp?.arguments as Array<ObjectExpression>)?.[0];
-        if (!arg) return;
-
-        const properties = arg?.properties as Array<Property>;
-        if (!properties) return;
-
-        const knownProperties = properties.filter(prop => {
+        const knownProperties = properties?.filter(prop => {
           const keyName = (prop.key as Identifier)?.name;
           return MODULE_PROPERTIES.some(mProp => mProp === keyName);
         });
@@ -95,4 +77,3 @@ export const decoratorArrayItemsRule = ruleCreator({
 
   defaultOptions: [],
 });
-
