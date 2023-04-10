@@ -11,7 +11,7 @@
   "main": "./dist/lib/index.js",
   "exports": "./dist/lib/index.js",
   "scripts": {
-    "dev": "nodemon -e js,ts --watch lib --exec 'yarn build'",
+    "dev": "nodemon -e js,ts --watch lib --watch tests --exec 'yarn build'",
     "build": "tsc",
     "lint": "npm-run-all \"lint:*\"",
     "lint:eslint-docs": "npm-run-all \"update:eslint-docs -- --check\"",

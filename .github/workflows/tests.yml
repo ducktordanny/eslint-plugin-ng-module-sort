@@ -1,0 +1,28 @@
+name: Tests
+on: push
+
+jobs:
+  build:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Fetch origin/master
+        run: |
+          git fetch --no-tags --prune --depth=5 origin master
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Install dependencies
+        run: yarn
+      
+      - name: Create build
+        run: yarn build
+
+      - name: Rule tests
+        run: yarn test
