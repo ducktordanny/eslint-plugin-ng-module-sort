@@ -1,5 +1,5 @@
 import { RuleTester } from '@typescript-eslint/utils/dist/ts-eslint';
-import {decoratorArrayItemsRule} from '../../../lib/rules/decorator-array-items';
+import { decoratorArrayItemsRule } from '../../../lib/rules/decorator-array-items';
 
 const ruleTester = new RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
@@ -42,8 +42,16 @@ ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
           ],
         }) export class TestComponent {}
       `,
+      output: `
+        @Component({
+          selector: 'app-test',
+          template: '',
+          standalone: true,
+          imports: [CommonModule, MatButtonModule, RouterModule],
+        }) export class TestComponent {}
+      `,
       errors: [
-        {messageId: 'wrongOrderOfDecoratorArrayItems', data: {property: 'imports'}},
+        { messageId: 'wrongOrderOfDecoratorArrayItems', data: { property: 'imports' } },
       ],
     },
     {
@@ -55,11 +63,19 @@ ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
           exports: [WorkshopPageComponent, ToArrayPipe],
         }) export class TestModule {}
       `,
+      output: `
+        @NgModule({
+          imports: [CommonModule, RouterModule, TestStandaloneComponent],
+          providers: [AppleService, SomethingService, TestService, UserStore],
+          declarations: [AppComponent, ToArrayPipe, WorkshopPageComponent],
+          exports: [ToArrayPipe, WorkshopPageComponent],
+        }) export class TestModule {}
+      `,
       errors: [
-        {messageId: 'wrongOrderOfDecoratorArrayItems', data: {property: 'imports'}},
-        {messageId: 'wrongOrderOfDecoratorArrayItems', data: {property: 'providers'}},
-        {messageId: 'wrongOrderOfDecoratorArrayItems', data: {property: 'declarations'}},
-        {messageId: 'wrongOrderOfDecoratorArrayItems', data: {property: 'exports'}},
+        { messageId: 'wrongOrderOfDecoratorArrayItems', data: { property: 'imports' } },
+        { messageId: 'wrongOrderOfDecoratorArrayItems', data: { property: 'providers' } },
+        { messageId: 'wrongOrderOfDecoratorArrayItems', data: { property: 'declarations' } },
+        { messageId: 'wrongOrderOfDecoratorArrayItems', data: { property: 'exports' } },
       ],
     },
   ],
