@@ -50,7 +50,7 @@ With this rule you can detect unsorted arrays of imports, declarations, provider
     "rules": {
         "ng-module-sort/decorator-array-items": [
             "error", {
-                "reverseSort": true
+                "reverseSort": false
             }
         ]
     }
