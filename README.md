@@ -4,7 +4,7 @@
 
 ## Installation
 
-[![NPM](https://img.shields.io/npm/v/eslint-plugin-ng-module-sort.svg)](https://www.npmjs.com/package/eslint-plugin-ng-module-sort) [wip]
+[![NPM](https://img.shields.io/npm/v/eslint-plugin-ng-module-sort.svg)](https://www.npmjs.com/package/eslint-plugin-ng-module-sort)
 
 You'll first need to install [ESLint](https://eslint.org/):
 

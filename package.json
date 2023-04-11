@@ -10,6 +10,10 @@
     "nestjs"
   ],
   "author": "Daniel Lazar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npm/cli.git"
+  },
   "main": "./dist/lib/index.js",
   "exports": "./dist/lib/index.js",
   "scripts": {
