@@ -7,48 +7,68 @@ const ruleTester = new RuleTester({
 ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
   valid: [
     `
-      @Component({
-        selector: 'app-test',
-        template: '',
-        standalone: true,
-        imports: [
-          CommonModule,
-          MatButtonModule,
-          RouterModule,
-        ],
-      }) export class TestComponent {}
+@Component({
+selector: 'app-test',
+template: '',
+standalone: true,
+imports: [
+CommonModule,
+MatButtonModule,
+RouterModule,
+],
+}) export class TestComponent {}
     `,
     `
-      @NgModule({
-        imports: [CommonModule, RouterModule, TestStandaloneComponent],
-        providers: [AppleService, SomethingService, TestService, UserStore],
-        declarations: [AppComponent, ToArrayPipe, WorkshopPageComponent],
-        exports: [ToArrayPipe, WorkshopPageComponent],
-      }) export class TestModule {}
+@NgModule({
+imports: [
+CommonModule,
+RouterModule,
+TestStandaloneComponent
+],
+providers: [
+AppleService,
+SomethingService,
+TestService,
+UserStore
+],
+declarations: [
+AppComponent,
+ToArrayPipe,
+WorkshopPageComponent
+],
+exports: [
+ToArrayPipe,
+WorkshopPageComponent
+],
+}) export class TestModule {}
     `
   ],
 
   invalid: [
     {
       code: `
-        @Component({
-          selector: 'app-test',
-          template: '',
-          standalone: true,
-          imports: [
-            RouterModule,
-            CommonModule,
-            MatButtonModule,
-          ],
-        }) export class TestComponent {}
+@Component({
+selector: 'app-test',
+template: '',
+standalone: true,
+imports: [
+RouterModule,
+CommonModule,
+MatButtonModule,
+],
+}) export class TestComponent {}
       `,
       output: `
-        @Component({
-          selector: 'app-test',
-          template: '',
-          standalone: true,
-          imports: [CommonModule, MatButtonModule, RouterModule],
-        }) export class TestComponent {}
+@Component({
+selector: 'app-test',
+template: '',
+standalone: true,
+imports: [
+CommonModule,
+MatButtonModule,
+RouterModule
+],
+}) export class TestComponent {}
       `,
       errors: [
         { messageId: 'wrongOrderOfDecoratorArrayItems', data: { property: 'imports' } },
@@ -56,20 +76,52 @@ ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
     },
     {
       code: `
-        @NgModule({
-          imports: [RouterModule, TestStandaloneComponent, CommonModule],
-          providers: [TestService, SomethingService, AppleService, UserStore],
-          declarations: [ToArrayPipe, AppComponent, WorkshopPageComponent],
-          exports: [WorkshopPageComponent, ToArrayPipe],
-        }) export class TestModule {}
+@NgModule({
+imports: [
+RouterModule,
+TestStandaloneComponent,
+CommonModule
+],
+providers: [
+TestService,
+SomethingService,
+AppleService,
+UserStore
+],
+declarations: [
+ToArrayPipe,
+AppComponent,
+WorkshopPageComponent
+],
+exports: [
+WorkshopPageComponent,
+ToArrayPipe
+],
+}) export class TestModule {}
       `,
       output: `
-        @NgModule({
-          imports: [CommonModule, RouterModule, TestStandaloneComponent],
-          providers: [AppleService, SomethingService, TestService, UserStore],
-          declarations: [AppComponent, ToArrayPipe, WorkshopPageComponent],
-          exports: [ToArrayPipe, WorkshopPageComponent],
-        }) export class TestModule {}
+@NgModule({
+imports: [
+CommonModule,
+RouterModule,
+TestStandaloneComponent
+],
+providers: [
+AppleService,
+SomethingService,
+TestService,
+UserStore
+],
+declarations: [
+AppComponent,
+ToArrayPipe,
+WorkshopPageComponent
+],
+exports: [
+ToArrayPipe,
+WorkshopPageComponent
+],
+}) export class TestModule {}
       `,
       errors: [
         { messageId: 'wrongOrderOfDecoratorArrayItems', data: { property: 'imports' } },

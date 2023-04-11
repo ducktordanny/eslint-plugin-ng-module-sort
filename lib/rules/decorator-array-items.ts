@@ -2,6 +2,8 @@ import { Identifier, ArrayExpression, Decorator } from '@typescript-eslint/types
 import { RuleContext, RuleFix, RuleFixer, RuleListener } from '@typescript-eslint/utils/dist/ts-eslint';
 import { getPropertiesOfDecorator, ruleCreator } from '../shared';
 
+type DecoratorArrayItemsRuleContext = RuleContext<'wrongOrderOfDecoratorArrayItems', Array<{reverseSort: boolean}>>;
+
 const MODULE_PROPERTIES: Array<string> = [
   'imports',
   'declarations',
@@ -18,11 +20,12 @@ const orderCheck = (elements: Array<Identifier>, reverseSort: boolean): boolean 
   return JSON.stringify(elementNames) === JSON.stringify(orderedElementNames);
 };
 
-const orderFixer = (fixer: RuleFixer, node: ArrayExpression, reverseSort: boolean): RuleFix => {
+const orderFixer = (fixer: RuleFixer, context: DecoratorArrayItemsRuleContext, node: ArrayExpression, reverseSort: boolean): RuleFix => {
+  const sourceCode = context.getSourceCode();
   const elements = node.elements as Array<Identifier>;
-  const fix = elements.map(el => el.name).sort();
+  const fix = elements.map(el => sourceCode.getText(el)).sort();
   if (reverseSort) fix.reverse();
-  return fixer.replaceText(node, `[${fix.join(', ')}]`);
+  return fixer.replaceText(node, `[\n${fix.join(',\n')}\n]`);
 };
 
 export const decoratorArrayItemsRule = ruleCreator({
@@ -42,7 +45,7 @@ export const decoratorArrayItemsRule = ruleCreator({
     ],
   },
 
-  create(context: RuleContext<'wrongOrderOfDecoratorArrayItems', Array<{reverseSort: boolean}>>): RuleListener {
+  create(context: DecoratorArrayItemsRuleContext): RuleListener {
     const reverseSort = context?.options?.[0]?.['reverseSort'] as boolean;
 
     return {
@@ -68,7 +71,7 @@ export const decoratorArrayItemsRule = ruleCreator({
             data: {
               property: keyName,
             },
-            fix: (fixer) => orderFixer(fixer, arrayExpression, reverseSort),
+            fix: (fixer) => orderFixer(fixer, context, arrayExpression, reverseSort),
           });
         });
       },
