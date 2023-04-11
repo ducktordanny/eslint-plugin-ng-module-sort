@@ -12,7 +12,7 @@
   "author": "Daniel Lazar",
   "repository": {
     "type": "git",
-    "url": "https://github.com/npm/cli.git"
+    "url": "https://github.com/ducktordanny/eslint-plugin-ng-module-sort"
   },
   "main": "./dist/lib/index.js",
   "exports": "./dist/lib/index.js",
