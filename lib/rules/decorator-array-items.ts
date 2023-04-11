@@ -13,8 +13,9 @@ const MODULE_PROPERTIES: Array<string> = [
   'bootstrap',
 ];
 
-const orderCheck = (elements: Array<Identifier>, reverseSort: boolean): boolean => {
-  const elementNames = elements.map(el => el.name);
+const orderCheck = (context: DecoratorArrayItemsRuleContext, elements: Array<Identifier>, reverseSort: boolean): boolean => {
+  const sourceCode = context.getSourceCode();
+  const elementNames = elements.map(el => sourceCode.getText(el));
   const orderedElementNames = [...elementNames].sort();
   if (reverseSort) orderedElementNames.reverse();
   return JSON.stringify(elementNames) === JSON.stringify(orderedElementNames);
@@ -62,7 +63,7 @@ export const decoratorArrayItemsRule = ruleCreator({
           const keyName = (prop.key as Identifier)?.name;
           const arrayExpression = prop.value as ArrayExpression;
           const elements = arrayExpression.elements as Array<Identifier>;
-          const isOrdered = orderCheck(elements, reverseSort);
+          const isOrdered = orderCheck(context, elements, reverseSort);
           if (isOrdered) return;
 
           context.report({
