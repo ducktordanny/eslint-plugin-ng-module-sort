@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.1 - Sun Jan 28 2024 16:15:00 GMT+0200
+
+- Refactors for more cleaner code
+
 ## v1.1.0 - Tue Apr 11 2023 21:40:00 GMT+0200
 
 - Fix wrong repo url in package.json
