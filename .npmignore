@@ -1,6 +1,0 @@
-.github/
-dist/tests/
-lib/
-tests/
-.eslintrc.js
-tsconfig.json

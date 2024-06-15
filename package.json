@@ -16,6 +16,10 @@
   },
   "main": "./dist/lib/index.js",
   "exports": "./dist/lib/index.js",
+  "files": [
+    "dist/lib",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "dev": "nodemon -e js,ts --watch lib --watch tests --exec 'yarn build'",
     "build": "rm -rf ./dist && tsc",
