@@ -18,12 +18,13 @@
   "exports": "./dist/lib/index.js",
   "scripts": {
     "dev": "nodemon -e js,ts --watch lib --watch tests --exec 'yarn build'",
-    "build": "tsc",
+    "build": "rm -rf ./dist && tsc",
     "lint": "npm-run-all \"lint:*\"",
     "lint:eslint-docs": "npm-run-all \"update:eslint-docs -- --check\"",
     "lint:js": "eslint .",
-    "test": "mocha tests --recursive ./dist/tests/",
-    "update:eslint-docs": "eslint-doc-generator"
+    "test": "yarn build && mocha tests --recursive ./dist/tests/",
+    "update:eslint-docs": "eslint-doc-generator",
+    "publish": "yarn build; npm publish"
   },
   "dependencies": {
     "requireindex": "^1.2.0"
