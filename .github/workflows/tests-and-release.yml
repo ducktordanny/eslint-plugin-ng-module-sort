@@ -1,4 +1,6 @@
-name: Release
+# On master pushes it runs the rule tests and if needed it publishes to NPM (new package.json version).
+
+name: Tests & Release
 on:
   push:
     branches: master
