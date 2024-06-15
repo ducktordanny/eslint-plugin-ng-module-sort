@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.0 - Sat Jun 15 2024 16:30:00 GMT+0200
+
+- Refactoring fixer code to be more precise: Now it handles indentations and single-line sortings.
+
 ## v1.1.1 - Sun Jan 28 2024 16:15:00 GMT+0200
 
 - Refactors for more cleaner code
