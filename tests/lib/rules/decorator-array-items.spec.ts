@@ -29,16 +29,16 @@ ruleTester.run("decorator-array-items", decoratorArrayItemsRule, {
     AppleService,
     SomethingService,
     TestService,
-    UserStore
+    UserStore,
   ],
   declarations: [
     AppComponent,
     ToArrayPipe,
-    WorkshopPageComponent
+    WorkshopPageComponent,
   ],
   exports: [
     ToArrayPipe,
-    WorkshopPageComponent
+    WorkshopPageComponent,
   ],
 }) export class TestModule {}
     `,
@@ -51,10 +51,34 @@ ruleTester.run("decorator-array-items", decoratorArrayItemsRule, {
   selector: 'app-test',
   template: '',
   standalone: true,
+  imports: [RouterModule, CommonModule, MatButtonModule],
+}) export class TestComponent {}
+      `,
+      output: `
+@Component({
+  selector: 'app-test',
+  template: '',
+  standalone: true,
+  imports: [CommonModule, MatButtonModule, RouterModule],
+}) export class TestComponent {}
+      `,
+      errors: [
+        {
+          messageId: "wrongOrderOfDecoratorArrayItems",
+          data: { property: "imports" },
+        },
+      ],
+    },
+    {
+      code: `
+@Component({
+  selector: 'app-test',
+  template: '',
+  standalone: true,
   imports: [
     RouterModule,
     CommonModule,
-    MatButtonModule,
+    MatButtonModule
   ],
 }) export class TestComponent {}
       `,
@@ -83,22 +107,22 @@ ruleTester.run("decorator-array-items", decoratorArrayItemsRule, {
   imports: [
     RouterModule,
     TestStandaloneComponent,
-    CommonModule
+    CommonModule,
   ],
   providers: [
     TestService,
     SomethingService,
     AppleService,
-    UserStore
+    UserStore,
   ],
   declarations: [
     ToArrayPipe,
     AppComponent,
-    WorkshopPageComponent
+    WorkshopPageComponent,
   ],
   exports: [
     WorkshopPageComponent,
-    ToArrayPipe
+    ToArrayPipe,
   ],
 }) export class TestModule {}
       `,
@@ -107,22 +131,22 @@ ruleTester.run("decorator-array-items", decoratorArrayItemsRule, {
   imports: [
     CommonModule,
     RouterModule,
-    TestStandaloneComponent
+    TestStandaloneComponent,
   ],
   providers: [
     AppleService,
     SomethingService,
     TestService,
-    UserStore
+    UserStore,
   ],
   declarations: [
     AppComponent,
     ToArrayPipe,
-    WorkshopPageComponent
+    WorkshopPageComponent,
   ],
   exports: [
     ToArrayPipe,
-    WorkshopPageComponent
+    WorkshopPageComponent,
   ],
 }) export class TestModule {}
       `,
