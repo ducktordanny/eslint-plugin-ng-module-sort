@@ -7,7 +7,7 @@ import {
 } from '@typescript-eslint/types/dist/generated/ast-spec';
 import {ESLintUtils} from '@typescript-eslint/utils';
 
-import {DECORATORS, MODULE_PROPERTIES} from './contants';
+import {DECORATORS, MODULE_PROPERTIES} from './constants';
 
 export const ruleCreator = ESLintUtils.RuleCreator(
   (name) => `https://github.com/ducktordanny/eslint-plugin-ng-module-sort#${name}`,
