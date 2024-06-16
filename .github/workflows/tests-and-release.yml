@@ -1,12 +1,13 @@
 # On master pushes it runs the rule tests and if needed it publishes to NPM (new package.json version).
 
-name: Tests & Release
+name: Master Workflow
 on:
   push:
     branches: master
 
 jobs:
-  publish:
+  checks:
+    name: Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,6 +29,25 @@ jobs:
 
       - name: Rule tests
         run: yarn test
+
+  release:
+    name: Release
+    needs: checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build
+        run: yarn build
 
       - name: Publish
         uses: JS-DevTools/npm-publish@v3

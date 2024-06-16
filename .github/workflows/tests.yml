@@ -1,6 +1,6 @@
 # Runs rule tests on PRs targeting the master.
 
-name: Tests
+name: PR Workflow
 on:
   pull_request:
     branches: master
