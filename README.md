@@ -48,7 +48,9 @@ With this rule you can detect unsorted arrays of imports, declarations, provider
     "ng-module-sort/decorator-array-items": [
       "error",
       {
-        "reverseSort": false
+        "reverseSort": false,
+        "extraDecorators": [],
+        "extraProperties": []
       }
     ]
   }
@@ -110,6 +112,23 @@ import {Component} from '@angular/core';
   ],
 })
 ```
+
+- By using options `extraDecorator: ['YourDecorators']` and `extraProperties: ['yourProperties']` you can extend the default list that is used for the checks.
+
+```ts
+import {Component} from '@angular/core';
+
+@YourDecorators({
+  yourProperties: [
+    Apple,
+    Banana,
+    Paprika,
+    SomethingElse,
+  ],
+})
+```
+
+The default options can be found [here](./lib/constants.ts).
 
 ### decorator-properties
 
