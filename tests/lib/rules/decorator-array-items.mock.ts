@@ -90,3 +90,23 @@ export const validReversedOrderMock = `@Component({
     CommonModule,
   ],
 }) export class TestComponent {}`;
+
+export const validExtrasMock = `@SomethingCustomIGuess({
+  somethings: [Apple, Doggo, MockedMock, TheModule],
+  apples: [
+    Catto,
+    Mock,
+    TranslateModule,
+    VolumeModule,
+  ],
+}) export class CustomTestThingy {}`;
+
+export const invalidExtrasMock = `@SomethingCustomIGuess({
+  somethings: [Doggo, Apple, TheModule, MockedMock],
+  apples: [
+    TranslateModule,
+    Catto,
+    VolumeModule,
+    Mock,
+  ],
+}) export class CustomTestThingy {}`;

@@ -1,9 +1,11 @@
 import {RuleTester} from '@typescript-eslint/utils/dist/ts-eslint';
 import {decoratorArrayItemsRule} from '../../../lib/rules/decorator-array-items';
 import {
+  invalidExtrasMock,
   invalidMultilineMock,
   invalidMultipleMultilineMock,
   invalidSingleLineMock,
+  validExtrasMock,
   validMultilineMock,
   validMultipleMultilineMock,
   validReversedOrderMock,
@@ -29,12 +31,15 @@ ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
     },
     {
       name: 'should be fine with reversed sort set',
-      options: [
-        {
-          reverseSort: true,
-        },
-      ],
+      options: [{reverseSort: true}],
       code: validReversedOrderMock,
+    },
+    {
+      name: 'should be fine with extended decorators and properties',
+      options: [
+        {extraDecorators: ['SomethingCustomIGuess'], extraProperties: ['somethings', 'apples']},
+      ],
+      code: validExtrasMock,
     },
   ],
 
@@ -50,7 +55,6 @@ ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
         },
       ],
     },
-
     {
       name: 'should sort multiple lines keeping indentation',
       code: invalidMultilineMock,
@@ -62,7 +66,6 @@ ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
         },
       ],
     },
-
     {
       name: 'should sort multiple multilines with keeping indentations',
       code: invalidMultipleMultilineMock,
@@ -83,6 +86,24 @@ ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
         {
           messageId: 'wrongOrderOfDecoratorArrayItems',
           data: {property: 'exports'},
+        },
+      ],
+    },
+    {
+      name: 'should sort with extras set',
+      options: [
+        {extraDecorators: ['SomethingCustomIGuess'], extraProperties: ['somethings', 'apples']},
+      ],
+      code: invalidExtrasMock,
+      output: validExtrasMock,
+      errors: [
+        {
+          messageId: 'wrongOrderOfDecoratorArrayItems',
+          data: {property: 'somethings'},
+        },
+        {
+          messageId: 'wrongOrderOfDecoratorArrayItems',
+          data: {property: 'apples'},
         },
       ],
     },
