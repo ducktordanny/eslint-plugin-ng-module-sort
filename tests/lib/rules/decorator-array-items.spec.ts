@@ -1,171 +1,88 @@
-import { RuleTester } from "@typescript-eslint/utils/dist/ts-eslint";
-import { decoratorArrayItemsRule } from "../../../lib/rules/decorator-array-items";
+import {RuleTester} from '@typescript-eslint/utils/dist/ts-eslint';
+import {decoratorArrayItemsRule} from '../../../lib/rules/decorator-array-items';
+import {
+  invalidMultilineMock,
+  invalidMultipleMultilineMock,
+  invalidSingleLineMock,
+  validMultilineMock,
+  validMultipleMultilineMock,
+  validReversedOrderMock,
+  validSingleLineMock,
+} from './decorator-array-items.mock';
 
 const ruleTester = new RuleTester({
-  parser: require.resolve("@typescript-eslint/parser"),
+  parser: require.resolve('@typescript-eslint/parser'),
 });
-ruleTester.run("decorator-array-items", decoratorArrayItemsRule, {
+ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
   valid: [
-    `
-@Component({
-  selector: 'app-test',
-  template: '',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    RouterModule,
-  ],
-}) export class TestComponent {}
-    `,
-    `
-@NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    TestStandaloneComponent
-  ],
-  providers: [
-    AppleService,
-    SomethingService,
-    TestService,
-    UserStore,
-  ],
-  declarations: [
-    AppComponent,
-    ToArrayPipe,
-    WorkshopPageComponent,
-  ],
-  exports: [
-    ToArrayPipe,
-    WorkshopPageComponent,
-  ],
-}) export class TestModule {}
-    `,
+    {
+      name: 'should be fine in a single line',
+      code: validSingleLineMock,
+    },
+    {
+      name: 'should be fine in multiple lines',
+      code: validMultilineMock,
+    },
+    {
+      name: 'should be fine in multiple multilines',
+      code: validMultipleMultilineMock,
+    },
+    {
+      name: 'should be fine with reversed sort set',
+      options: [
+        {
+          reverseSort: true,
+        },
+      ],
+      code: validReversedOrderMock,
+    },
   ],
 
   invalid: [
     {
-      code: `
-@Component({
-  selector: 'app-test',
-  template: '',
-  standalone: true,
-  imports: [RouterModule, CommonModule, MatButtonModule],
-}) export class TestComponent {}
-      `,
-      output: `
-@Component({
-  selector: 'app-test',
-  template: '',
-  standalone: true,
-  imports: [CommonModule, MatButtonModule, RouterModule],
-}) export class TestComponent {}
-      `,
+      name: 'should sort in a single line',
+      code: invalidSingleLineMock,
+      output: validSingleLineMock,
       errors: [
         {
-          messageId: "wrongOrderOfDecoratorArrayItems",
-          data: { property: "imports" },
+          messageId: 'wrongOrderOfDecoratorArrayItems',
+          data: {property: 'imports'},
         },
       ],
     },
+
     {
-      code: `
-@Component({
-  selector: 'app-test',
-  template: '',
-  standalone: true,
-  imports: [
-    RouterModule,
-    CommonModule,
-    MatButtonModule
-  ],
-}) export class TestComponent {}
-      `,
-      output: `
-@Component({
-  selector: 'app-test',
-  template: '',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    RouterModule
-  ],
-}) export class TestComponent {}
-      `,
+      name: 'should sort multiple lines keeping indentation',
+      code: invalidMultilineMock,
+      output: validMultilineMock,
       errors: [
         {
-          messageId: "wrongOrderOfDecoratorArrayItems",
-          data: { property: "imports" },
+          messageId: 'wrongOrderOfDecoratorArrayItems',
+          data: {property: 'imports'},
         },
       ],
     },
+
     {
-      code: `
-@NgModule({
-  imports: [
-    RouterModule,
-    TestStandaloneComponent,
-    CommonModule,
-  ],
-  providers: [
-    TestService,
-    SomethingService,
-    AppleService,
-    UserStore,
-  ],
-  declarations: [
-    ToArrayPipe,
-    AppComponent,
-    WorkshopPageComponent,
-  ],
-  exports: [
-    WorkshopPageComponent,
-    ToArrayPipe,
-  ],
-}) export class TestModule {}
-      `,
-      output: `
-@NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    TestStandaloneComponent,
-  ],
-  providers: [
-    AppleService,
-    SomethingService,
-    TestService,
-    UserStore,
-  ],
-  declarations: [
-    AppComponent,
-    ToArrayPipe,
-    WorkshopPageComponent,
-  ],
-  exports: [
-    ToArrayPipe,
-    WorkshopPageComponent,
-  ],
-}) export class TestModule {}
-      `,
+      name: 'should sort multiple multilines with keeping indentations',
+      code: invalidMultipleMultilineMock,
+      output: validMultipleMultilineMock,
       errors: [
         {
-          messageId: "wrongOrderOfDecoratorArrayItems",
-          data: { property: "imports" },
+          messageId: 'wrongOrderOfDecoratorArrayItems',
+          data: {property: 'imports'},
         },
         {
-          messageId: "wrongOrderOfDecoratorArrayItems",
-          data: { property: "providers" },
+          messageId: 'wrongOrderOfDecoratorArrayItems',
+          data: {property: 'providers'},
         },
         {
-          messageId: "wrongOrderOfDecoratorArrayItems",
-          data: { property: "declarations" },
+          messageId: 'wrongOrderOfDecoratorArrayItems',
+          data: {property: 'declarations'},
         },
         {
-          messageId: "wrongOrderOfDecoratorArrayItems",
-          data: { property: "exports" },
+          messageId: 'wrongOrderOfDecoratorArrayItems',
+          data: {property: 'exports'},
         },
       ],
     },
