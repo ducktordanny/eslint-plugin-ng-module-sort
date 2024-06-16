@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.3.0 - Sat Jun 16 2024 20:15:00 GMT+0200
+
+Changes:
+
+- Add new `extraDecorators` and `extraProperties` options to extend the [default list](https://github.com/ducktordanny/eslint-plugin-ng-module-sort/blob/master/lib/constants.ts) that is being checked.
+
+Dev note:
+
+- CI/CD: Add Lint check and make sure that checks are needed before Release step
+- Add prettier for formatting
+- Use husky for git hooks, running pretty-quick and eslint before commit
+- Cleanup test files for more readability
+
 ## v1.2.1 - Sat Jun 15 2024 17:30:00 GMT+0200
 
 - Reduce published code
