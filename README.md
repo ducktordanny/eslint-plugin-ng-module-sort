@@ -24,12 +24,9 @@ Add `ng-module-sort` to the plugins section of your `.eslintrc` configuration fi
 
 ```json
 {
-    "plugins": [
-        "ng-module-sort"
-    ]
+  "plugins": ["ng-module-sort"]
 }
 ```
-
 
 Then configure the rules you want to use under the rules section.
 
@@ -47,19 +44,21 @@ With this rule you can detect unsorted arrays of imports, declarations, provider
 
 ```json
 {
-    "rules": {
-        "ng-module-sort/decorator-array-items": [
-            "error", {
-                "reverseSort": false
-            }
-        ]
-    }
+  "rules": {
+    "ng-module-sort/decorator-array-items": [
+      "error",
+      {
+        "reverseSort": false
+      }
+    ]
+  }
 }
 ```
 
 A few example of it:
 
 - Error
+
 ```ts
 import {Component} from '@angular/core';
 
@@ -77,6 +76,7 @@ import {Component} from '@angular/core';
 ```
 
 - Fix with default options
+
 ```ts
 import {Component} from '@angular/core';
 
@@ -94,6 +94,7 @@ import {Component} from '@angular/core';
 ```
 
 - With option `"reverseSort": true`
+
 ```ts
 import {Component} from '@angular/core';
 

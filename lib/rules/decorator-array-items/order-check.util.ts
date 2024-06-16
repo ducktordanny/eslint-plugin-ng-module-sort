@@ -1,6 +1,6 @@
-import { Identifier } from "@typescript-eslint/types/dist/generated/ast-spec";
+import {Identifier} from '@typescript-eslint/types/dist/generated/ast-spec';
 
-import { DecoratorArrayItemsRuleContext } from "../../types";
+import {DecoratorArrayItemsRuleContext} from '../../types';
 
 export const orderCheck = (
   context: DecoratorArrayItemsRuleContext,

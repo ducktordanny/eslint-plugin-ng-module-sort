@@ -1,10 +1,7 @@
-import {
-  ArrayExpression,
-  Identifier,
-} from "@typescript-eslint/types/dist/generated/ast-spec";
-import { RuleFix, RuleFixer } from "@typescript-eslint/utils/dist/ts-eslint";
+import {ArrayExpression, Identifier} from '@typescript-eslint/types/dist/generated/ast-spec';
+import {RuleFix, RuleFixer} from '@typescript-eslint/utils/dist/ts-eslint';
 
-import { DecoratorArrayItemsRuleContext } from "../../types";
+import {DecoratorArrayItemsRuleContext} from '../../types';
 
 export const orderFixer = (
   fixer: RuleFixer,
@@ -17,11 +14,11 @@ export const orderFixer = (
   const sortedElements = elements.map((el) => sourceCode.getText(el)).sort();
   if (reverseSort) sortedElements.reverse();
 
-  let joinSeparator = ", ";
+  let joinSeparator = ', ';
   const start = elements?.at(0)?.loc?.start;
   const end = elements?.at(-1)?.loc?.start;
   if (start && end && start.line !== end.line) {
-    const indentation = " ".repeat(start.column);
+    const indentation = ' '.repeat(start.column);
     joinSeparator = `,\n${indentation}`;
   }
 
