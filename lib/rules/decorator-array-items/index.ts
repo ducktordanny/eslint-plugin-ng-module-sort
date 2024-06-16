@@ -2,45 +2,49 @@ import {
   Identifier,
   ArrayExpression,
   Decorator,
-} from "@typescript-eslint/types/dist/generated/ast-spec";
-import { RuleListener } from "@typescript-eslint/utils/dist/ts-eslint";
+} from '@typescript-eslint/types/dist/generated/ast-spec';
+import {RuleListener} from '@typescript-eslint/utils/dist/ts-eslint';
 
-import { orderCheck } from "./order-check.util";
-import { orderFixer } from "./order-fixer.util";
+import {orderCheck} from './order-check.util';
+import {orderFixer} from './order-fixer.util';
 
-import { MODULE_PROPERTIES } from "../../contants";
-import { DecoratorArrayItemsRuleContext } from "../../types";
-import { getPropertiesOfDecorator, ruleCreator } from "../../utils";
-import { NamedCreateRuleMeta } from "@typescript-eslint/utils/dist/eslint-utils";
+import {DecoratorArrayItemsRuleContext, RuleOptions} from '../../types';
+import {getKnownProperties, getPropertiesOfDecorator, ruleCreator} from '../../utils';
+import {NamedCreateRuleMeta} from '@typescript-eslint/utils/dist/eslint-utils';
 
-const name = "decorator-array-items";
+const name = 'decorator-array-items';
+const defaultOptions = {
+  reverseSort: false,
+  extraDecorators: [],
+  extraProperties: [],
+} as RuleOptions;
 
-const meta: NamedCreateRuleMeta<"wrongOrderOfDecoratorArrayItems"> = {
-  type: "layout",
+const meta: NamedCreateRuleMeta<'wrongOrderOfDecoratorArrayItems'> = {
+  type: 'layout',
   docs: {
     description:
-      "Checks if the Angular or NestJS module related metadata has ordered arrays, and provide an autofix to sort them.",
-    recommended: "error",
+      'Checks if the Angular or NestJS module related metadata has ordered arrays, and provide an autofix to sort them.',
+    recommended: 'error',
   },
   messages: {
-    wrongOrderOfDecoratorArrayItems:
-      "Run `eslint --fix .` to sort the members of {{ property }}.",
+    wrongOrderOfDecoratorArrayItems: 'Run `eslint --fix .` to sort the members of {{ property }}.',
   },
-  fixable: "code",
-  schema: [{ reverseSort: false }],
+  fixable: 'code',
+  schema: [defaultOptions],
 };
 
 function create(context: DecoratorArrayItemsRuleContext): RuleListener {
-  const reverseSort = context?.options?.[0]?.["reverseSort"] as boolean;
+  const options = (context?.options?.[0] || defaultOptions) as RuleOptions;
+  const reverseSort = options.reverseSort ?? defaultOptions.reverseSort;
+  const extraDecorators = options.extraDecorators || defaultOptions.extraDecorators;
+  const extraProperties = options.extraProperties || defaultOptions.extraProperties;
 
   return {
     Decorator(node: Decorator): void {
-      const properties = getPropertiesOfDecorator(node);
+      const properties = getPropertiesOfDecorator(node, extraDecorators);
+      if (!properties) return;
 
-      const knownProperties = properties?.filter((prop) => {
-        const keyName = (prop.key as Identifier)?.name;
-        return MODULE_PROPERTIES.some((mProp) => mProp === keyName);
-      });
+      const knownProperties = getKnownProperties(properties, extraProperties);
       if (!knownProperties || knownProperties.length === 0) return;
 
       knownProperties.forEach((prop) => {
@@ -52,12 +56,11 @@ function create(context: DecoratorArrayItemsRuleContext): RuleListener {
 
         context.report({
           node: arrayExpression,
-          messageId: "wrongOrderOfDecoratorArrayItems",
+          messageId: 'wrongOrderOfDecoratorArrayItems',
           data: {
             property: keyName,
           },
-          fix: (fixer) =>
-            orderFixer(fixer, context, arrayExpression, reverseSort),
+          fix: (fixer) => orderFixer(fixer, context, arrayExpression, reverseSort),
         });
       });
     },
