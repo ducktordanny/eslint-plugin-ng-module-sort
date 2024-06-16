@@ -23,10 +23,11 @@
   "scripts": {
     "dev": "nodemon -e js,ts --watch lib --watch tests --exec 'yarn build'",
     "build": "rm -rf ./dist && tsc",
-    "lint": "npm-run-all \"lint:*\"",
-    "lint:eslint-docs": "npm-run-all \"update:eslint-docs -- --check\"",
-    "lint:js": "eslint .",
-    "test": "yarn build && mocha tests --recursive ./dist/tests/",
+    "build:test": "yarn build; yarn test",
+    "build:lint": "yarn build; yarn lint",
+    "test": "mocha tests --recursive ./dist/tests/",
+    "lint": "eslint .",
+    "lint:eslint-docs": "update:eslint-docs --check",
     "update:eslint-docs": "eslint-doc-generator",
     "publish": "yarn build; npm publish"
   },

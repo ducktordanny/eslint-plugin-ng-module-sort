@@ -14,19 +14,22 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
-    allowImportExportEverywhere: true
+    allowImportExportEverywhere: true,
   },
   rules: {
-    'node/no-unsupported-features/es-syntax': [
+    'node/no-unsupported-features/es-syntax': ['error', {ignores: ['modules']}],
+    'node/no-unpublished-require': [
       'error',
-      {ignores: ['modules']},
+      {
+        allowModules: ['@typescript-eslint/utils'],
+      },
     ],
-    'node/no-unpublished-import': ['error', {ignores: ['modules']}]
+    'node/no-missing-import': 'off',
   },
   overrides: [
     {
       files: ['tests/**/*.ts'],
-      env: { mocha: true },
+      env: {mocha: true},
     },
   ],
 };
