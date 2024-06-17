@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.3.1 - Sat Jun 17 2024 23:00:00 GMT+0200
+
+Changes:
+
+- Fix package install error by adding prepack step to publish workflow (this fixes yarn's `postinstall` problem)
+
 ## v1.3.0 - Sat Jun 16 2024 20:15:00 GMT+0200
 
 Changes:
