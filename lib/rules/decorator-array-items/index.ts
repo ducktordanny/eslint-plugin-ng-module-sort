@@ -51,6 +51,7 @@ function create(context: DecoratorArrayItemsRuleContext): RuleListener {
         const keyName = (prop.key as Identifier)?.name;
         const arrayExpression = prop.value as ArrayExpression;
         const elements = arrayExpression.elements as Array<Identifier>;
+        if (!elements || !elements.length) return;
         const isOrdered = orderCheck(context, elements, reverseSort);
         if (isOrdered) return;
 
