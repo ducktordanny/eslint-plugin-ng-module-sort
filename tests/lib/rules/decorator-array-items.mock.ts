@@ -110,3 +110,17 @@ export const invalidExtrasMock = `@SomethingCustomIGuess({
     Mock,
   ],
 }) export class CustomTestThingy {}`;
+
+export const validArrayVariableMock = `@Component({
+  selector: 'app-test',
+  template: '',
+  standalone: true,
+  imports: aRandomVariableContainingImports,
+}) export class TestComponent {}`;
+
+export const validEmptyArrayMock = `@Component({
+  selector: 'app-test',
+  template: '',
+  standalone: true,
+  imports: [],
+}) export class TestComponent {}`;
