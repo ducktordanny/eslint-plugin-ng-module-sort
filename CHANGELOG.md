@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.3.2 - Tue May 20 2025 23:00:00 GMT+0200
+
+Changes:
+
+- Fix #5: Handle possible undefined when getting a variable instead of an inline Array in `ng-module-sort/decorator-array-items`
+
 ## v1.3.1 - Sat Jun 17 2024 23:00:00 GMT+0200
 
 Changes:

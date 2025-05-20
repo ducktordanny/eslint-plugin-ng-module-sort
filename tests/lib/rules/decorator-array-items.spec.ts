@@ -5,6 +5,8 @@ import {
   invalidMultilineMock,
   invalidMultipleMultilineMock,
   invalidSingleLineMock,
+  validArrayVariableMock,
+  validEmptyArrayMock,
   validExtrasMock,
   validMultilineMock,
   validMultipleMultilineMock,
@@ -40,6 +42,14 @@ ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
         {extraDecorators: ['SomethingCustomIGuess'], extraProperties: ['somethings', 'apples']},
       ],
       code: validExtrasMock,
+    },
+    {
+      name: 'should be fine with an array variable provided',
+      code: validArrayVariableMock,
+    },
+    {
+      name: 'should be fine with an empty array',
+      code: validEmptyArrayMock,
     },
   ],
 
