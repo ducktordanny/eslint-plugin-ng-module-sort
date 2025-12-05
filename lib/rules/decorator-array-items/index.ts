@@ -17,27 +17,35 @@ const defaultOptions = {
   reverseSort: false,
   extraDecorators: [],
   extraProperties: [],
-} as RuleOptions;
+} satisfies RuleOptions;
 
 const meta: NamedCreateRuleMeta<'wrongOrderOfDecoratorArrayItems'> = {
   type: 'layout',
   docs: {
     description:
       'Checks if the Angular or NestJS module related metadata has ordered arrays, and provide an autofix to sort them.',
-    recommended: 'error',
   },
+  //recommended: 'error', TODO?
   messages: {
     wrongOrderOfDecoratorArrayItems: 'Run `eslint --fix .` to sort the members of {{ property }}.',
   },
   fixable: 'code',
-  schema: [defaultOptions],
+  // defaultOptions: [], TODO?
+  schema: {
+    type: 'object',
+    properties: {
+      reverseSort: {type: 'boolean'},
+      extraDecorators: {type: 'array', items: {type: 'string'}},
+      extraProperties: {type: 'array', items: {type: 'string'}},
+    },
+  },
 };
 
 function create(context: DecoratorArrayItemsRuleContext): RuleListener {
-  const options = (context?.options?.[0] || defaultOptions) as RuleOptions;
-  const reverseSort = options.reverseSort ?? defaultOptions.reverseSort;
-  const extraDecorators = options.extraDecorators || defaultOptions.extraDecorators;
-  const extraProperties = options.extraProperties || defaultOptions.extraProperties;
+  const {reverseSort, extraDecorators, extraProperties} = {
+    ...context.options[0],
+    ...defaultOptions,
+  } as RuleOptions;
 
   return {
     Decorator(node: Decorator): void {

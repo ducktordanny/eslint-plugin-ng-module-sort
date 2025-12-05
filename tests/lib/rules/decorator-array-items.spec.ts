@@ -1,4 +1,5 @@
-import {RuleTester} from '@typescript-eslint/utils/dist/ts-eslint';
+import {RuleTester} from 'eslint';
+
 import {decoratorArrayItemsRule} from '../../../lib/rules/decorator-array-items';
 import {
   invalidExtrasMock,
@@ -14,9 +15,7 @@ import {
   validSingleLineMock,
 } from './decorator-array-items.mock';
 
-const ruleTester = new RuleTester({
-  parser: require.resolve('@typescript-eslint/parser'),
-});
+const ruleTester = new RuleTester();
 ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
   valid: [
     {

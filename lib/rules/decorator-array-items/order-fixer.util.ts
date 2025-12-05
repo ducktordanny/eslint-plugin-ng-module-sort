@@ -9,7 +9,7 @@ export const orderFixer = (
   node: ArrayExpression,
   reverseSort: boolean,
 ): RuleFix | null => {
-  const sourceCode = context.getSourceCode();
+  const sourceCode = context.sourceCode;
   const elements = node.elements as Array<Identifier>;
   const sortedElements = elements.map((el) => sourceCode.getText(el)).sort();
   if (reverseSort) sortedElements.reverse();

@@ -7,7 +7,7 @@ export const orderCheck = (
   elements: Array<Identifier>,
   reverseSort: boolean,
 ): boolean => {
-  const sourceCode = context.getSourceCode();
+  const sourceCode = context.sourceCode;
   const elementNames = elements.map((el) => sourceCode.getText(el));
   const orderedElementNames = [...elementNames].sort();
   if (reverseSort) orderedElementNames.reverse();

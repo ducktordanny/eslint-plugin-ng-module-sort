@@ -20,6 +20,8 @@ npm install eslint-plugin-ng-module-sort --save-dev
 
 ## Usage
 
+<!-- TODO: Update docs, e.g. don't use .eslintrc, but eslint.config.mjs -->
+
 Add `ng-module-sort` to the plugins section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-` prefix:
 
 ```json
