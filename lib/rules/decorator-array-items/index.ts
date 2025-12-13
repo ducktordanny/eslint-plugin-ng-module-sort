@@ -42,8 +42,8 @@ const meta: ESLintUtils.NamedCreateRuleMeta<
 
 function create(context: DecoratorArrayItemsRuleContext): ESLintUtils.RuleListener {
   const {reverseSort, extraDecorators, extraProperties} = {
-    ...context.options[0],
     ...defaultOptions,
+    ...context.options[0],
   } as RuleSettings;
 
   return {

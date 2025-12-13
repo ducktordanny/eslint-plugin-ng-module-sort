@@ -36,6 +36,7 @@ ruleTester.run(DECORATOR_ARRAY_ITEMS_NAME, decoratorArrayItemsRule, {
     },
     {
       name: 'should be fine with reversed sort set',
+      options: [{reverseSort: true}],
       code: validReversedOrderMock,
     },
     {
