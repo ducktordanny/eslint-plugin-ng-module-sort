@@ -6,11 +6,13 @@ import {orderFixer} from './order-fixer.util';
 import {DecoratorArrayItemsRuleContext, RuleOptions, RuleSettings} from '../../types';
 import {getKnownProperties, getPropertiesOfDecorator, ruleCreator} from '../../utils';
 
-const defaultOptions = {
-  reverseSort: false,
-  extraDecorators: [],
-  extraProperties: [],
-} satisfies RuleSettings;
+const defaultOptions = [
+  {
+    reverseSort: false,
+    extraDecorators: [],
+    extraProperties: [],
+  },
+] satisfies RuleSettings[];
 
 const meta: ESLintUtils.NamedCreateRuleMeta<
   'wrongOrderOfDecoratorArrayItems',
@@ -26,7 +28,7 @@ const meta: ESLintUtils.NamedCreateRuleMeta<
     wrongOrderOfDecoratorArrayItems: 'Run `eslint --fix .` to sort the members of {{ property }}.',
   },
   fixable: 'code',
-  defaultOptions: [defaultOptions],
+  defaultOptions,
   schema: [
     {
       type: 'object',
@@ -42,7 +44,7 @@ const meta: ESLintUtils.NamedCreateRuleMeta<
 
 function create(context: DecoratorArrayItemsRuleContext): ESLintUtils.RuleListener {
   const {reverseSort, extraDecorators, extraProperties} = {
-    ...defaultOptions,
+    ...defaultOptions[0],
     ...context.options[0],
   } as RuleSettings;
 
@@ -54,7 +56,7 @@ function create(context: DecoratorArrayItemsRuleContext): ESLintUtils.RuleListen
       const knownProperties = getKnownProperties(properties, extraProperties);
       if (!knownProperties || knownProperties.length === 0) return;
 
-      knownProperties.forEach((prop) => {
+      for (const prop of knownProperties) {
         const keyName = (prop.key as TSESTree.Identifier)?.name;
         const arrayExpression = prop.value as TSESTree.ArrayExpression;
         const elements = arrayExpression.elements as Array<TSESTree.Identifier>;
@@ -65,13 +67,11 @@ function create(context: DecoratorArrayItemsRuleContext): ESLintUtils.RuleListen
         context.report({
           node: arrayExpression,
           messageId: 'wrongOrderOfDecoratorArrayItems',
-          data: {
-            property: keyName,
-          },
+          data: {property: keyName},
           fix: (fixer: TSESLint.RuleFixer) =>
             orderFixer(fixer, context, arrayExpression, reverseSort),
         });
-      });
+      }
     },
   };
 }
@@ -80,6 +80,6 @@ export const DECORATOR_ARRAY_ITEMS_NAME = 'decorator-array-items';
 export const decoratorArrayItemsRule = ruleCreator({
   name: DECORATOR_ARRAY_ITEMS_NAME,
   meta,
-  defaultOptions: [defaultOptions],
+  defaultOptions,
   create,
 });
