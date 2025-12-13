@@ -1,6 +1,9 @@
-import {RuleTester} from 'eslint';
+import {RuleTester} from '@typescript-eslint/rule-tester';
 
-import {decoratorArrayItemsRule} from '../../../lib/rules/decorator-array-items';
+import {
+  DECORATOR_ARRAY_ITEMS_NAME,
+  decoratorArrayItemsRule,
+} from '../../../lib/rules/decorator-array-items';
 import {
   invalidExtrasMock,
   invalidMultilineMock,
@@ -16,10 +19,11 @@ import {
 } from './decorator-array-items.mock';
 
 const ruleTester = new RuleTester();
-ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
+ruleTester.run(DECORATOR_ARRAY_ITEMS_NAME, decoratorArrayItemsRule, {
   valid: [
     {
       name: 'should be fine in a single line',
+      options: [],
       code: validSingleLineMock,
     },
     {
@@ -32,7 +36,6 @@ ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
     },
     {
       name: 'should be fine with reversed sort set',
-      options: [{reverseSort: true}],
       code: validReversedOrderMock,
     },
     {

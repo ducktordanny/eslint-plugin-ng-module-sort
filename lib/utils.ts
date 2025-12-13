@@ -1,11 +1,4 @@
-import {
-  CallExpression,
-  Decorator,
-  Identifier,
-  ObjectExpression,
-  Property,
-} from '@typescript-eslint/types/dist/generated/ast-spec';
-import {ESLintUtils} from '@typescript-eslint/utils';
+import {TSESTree, ESLintUtils} from '@typescript-eslint/utils';
 
 import {DECORATORS, MODULE_PROPERTIES} from './constants';
 
@@ -14,27 +7,27 @@ export const ruleCreator = ESLintUtils.RuleCreator(
 );
 
 export function getPropertiesOfDecorator(
-  node: Decorator,
+  node: TSESTree.Decorator,
   extras: Array<string>,
   argIndex: number = 0,
-): Array<Property> | undefined {
-  const callExp = node?.expression as CallExpression;
-  const decoratorName = (callExp?.callee as Identifier)?.name;
+): Array<TSESTree.Property> | undefined {
+  const callExp = node?.expression as TSESTree.CallExpression;
+  const decoratorName = (callExp?.callee as TSESTree.Identifier)?.name;
   if (![...DECORATORS, ...extras].some((dec) => dec === decoratorName)) return;
 
-  const arg = (callExp?.arguments as Array<ObjectExpression>)?.[argIndex];
+  const arg = (callExp?.arguments as Array<TSESTree.ObjectExpression>)?.[argIndex];
   if (!arg || arg?.type !== 'ObjectExpression') return;
 
-  const properties = arg?.properties as Array<Property>;
+  const properties = arg?.properties as Array<TSESTree.Property>;
   return properties;
 }
 
 export function getKnownProperties(
-  properties: Array<Property>,
+  properties: Array<TSESTree.Property>,
   extras: Array<string>,
-): Array<Property> {
+): Array<TSESTree.Property> {
   return properties?.filter((prop) => {
-    const keyName = (prop.key as Identifier)?.name;
+    const keyName = (prop.key as TSESTree.Identifier)?.name;
     return [...MODULE_PROPERTIES, ...extras].some((mProp) => mProp === keyName);
   });
 }

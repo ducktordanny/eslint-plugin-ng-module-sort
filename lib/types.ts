@@ -1,10 +1,11 @@
-import {RuleContext} from '@typescript-eslint/utils/dist/ts-eslint';
+import {RuleContext} from '@typescript-eslint/utils/ts-eslint';
 
-export interface RuleOptions {
+export interface RuleSettings {
   reverseSort: boolean;
   extraDecorators: Array<string>;
   extraProperties: Array<string>;
 }
+export type RuleOptions = Partial<RuleSettings>;
 
 export type DecoratorArrayItemsRuleContext = RuleContext<
   'wrongOrderOfDecoratorArrayItems',

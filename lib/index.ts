@@ -1,5 +1,5 @@
-import {decoratorArrayItemsRule} from './rules/decorator-array-items';
+import {DECORATOR_ARRAY_ITEMS_NAME, decoratorArrayItemsRule} from './rules/decorator-array-items';
 
 export const rules = {
-  'decorator-array-items': decoratorArrayItemsRule,
+  [DECORATOR_ARRAY_ITEMS_NAME]: decoratorArrayItemsRule,
 };
