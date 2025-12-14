@@ -69,19 +69,32 @@ With this rule you can detect unsorted arrays of imports, declarations, provider
 - Decorator
 - Module
 
-```json
-{
-  "rules": {
-    "ng-module-sort/decorator-array-items": [
-      "error",
-      {
-        "reverseSort": false,
-        "extraDecorators": [],
-        "extraProperties": []
-      }
-    ]
-  }
-}
+Default options:
+
+```js
+// eslint.config.js
+const {defineConfig} = require('eslint/config');
+const ngModuleSort = require('eslint-plugin-ng-module-sort');
+
+module.exports = defineConfig([
+  {
+    // ...
+    plugins: {
+      'ng-module-sort': ngModuleSort,
+    },
+    rules: {
+      'ng-module-sort/decorator-array-items': [
+        'error'
+        {
+          reverseSort: false,
+          extraDecorators: [],
+          extraProperties: [],
+        },
+      ],
+      // ...
+    },
+  },
+]);
 ```
 
 A few example of it:
@@ -151,8 +164,6 @@ import {Component} from '@angular/core';
   ],
 })
 ```
-
-The default options can be found [here](./lib/constants.ts).
 
 ### decorator-properties
 
