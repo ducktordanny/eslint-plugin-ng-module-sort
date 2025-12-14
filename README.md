@@ -94,7 +94,6 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'app-example',
   template: '',
-  standalone: true,
   imports: [ // Run `eslint --fix .` to sort the members of imports.
     MatButtonModule,
     SharedModule,
@@ -112,7 +111,6 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'app-example',
   template: '',
-  standalone: true,
   imports: [
     CommonModule,
     MagicComponent,
@@ -130,7 +128,6 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'app-example',
   template: '',
-  standalone: true,
   imports: [
     SharedModule,
     MatButtonModule,
