@@ -97,6 +97,8 @@ module.exports = defineConfig([
 ]);
 ```
 
+![Video example of `decorator-array-items`](https://github.com/user-attachments/assets/044780e6-03d5-419b-87c7-ffc445328738)
+
 A few example of it:
 
 - Error
