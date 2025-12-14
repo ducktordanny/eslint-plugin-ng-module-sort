@@ -3,7 +3,6 @@ import pluginJs from '@eslint/js';
 import pluginNode from 'eslint-plugin-n';
 import eslintPlugin from 'eslint-plugin-eslint-plugin';
 
-// TODO: Could extend it with previous/new rules
 export default defineConfig([
   {
     name: 'eslint/js',
