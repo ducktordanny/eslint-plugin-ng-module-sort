@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-ng-module-sort",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Sort Angular and NestJS module imports, declarations, exports, controls, etc.",
   "keywords": [
     "eslint",
