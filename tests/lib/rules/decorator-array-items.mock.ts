@@ -1,21 +1,18 @@
 export const validSingleLineMock = `@Component({
   selector: 'app-test',
   template: '',
-  standalone: true,
   imports: [CommonModule, MatButtonModule, RouterModule],
 }) export class TestComponent {}`;
 
 export const invalidSingleLineMock = `@Component({
   selector: 'app-test',
   template: '',
-  standalone: true,
   imports: [CommonModule, RouterModule, MatButtonModule],
 }) export class TestComponent {}`;
 
 export const validMultilineMock = `@Component({
   selector: 'app-test',
   template: '',
-  standalone: true,
   imports: [
     CommonModule,
     MatButtonModule,
@@ -26,7 +23,6 @@ export const validMultilineMock = `@Component({
 export const invalidMultilineMock = `@Component({
   selector: 'app-test',
   template: '',
-  standalone: true,
   imports: [
     MatButtonModule,
     RouterModule,
@@ -83,7 +79,6 @@ export const invalidMultipleMultilineMock = `@NgModule({
 export const validReversedOrderMock = `@Component({
   selector: 'app-test',
   template: '',
-  standalone: true,
   imports: [
     RouterModule,
     MatButtonModule,
@@ -114,13 +109,11 @@ export const invalidExtrasMock = `@SomethingCustomIGuess({
 export const validArrayVariableMock = `@Component({
   selector: 'app-test',
   template: '',
-  standalone: true,
   imports: aRandomVariableContainingImports,
 }) export class TestComponent {}`;
 
 export const validEmptyArrayMock = `@Component({
   selector: 'app-test',
   template: '',
-  standalone: true,
   imports: [],
 }) export class TestComponent {}`;

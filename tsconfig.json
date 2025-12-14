@@ -5,15 +5,15 @@
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "noImplicitReturns": true,
     "pretty": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es2017",
-    "lib": ["es2017", "dom"]
+    "target": "es2022",
+    "lib": ["es2022", "dom"]
   },
   "include": ["./lib/**/*.ts", "./tests/**/*.ts"]
 }

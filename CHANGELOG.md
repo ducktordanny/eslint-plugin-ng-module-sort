@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.0 - Sun Dec 14 2025 15:0000 GMT+0200
+
+Changes:
+
+- Update dependencies, migrate to ESLint v9
+- Support flat config
+- Minor cleanups in code
+
 ## v1.3.2 - Tue May 20 2025 23:00:00 GMT+0200
 
 Changes:

@@ -1,16 +1,15 @@
-import {ArrayExpression, Identifier} from '@typescript-eslint/types/dist/generated/ast-spec';
-import {RuleFix, RuleFixer} from '@typescript-eslint/utils/dist/ts-eslint';
+import {TSESLint, TSESTree} from '@typescript-eslint/utils';
 
 import {DecoratorArrayItemsRuleContext} from '../../types';
 
 export const orderFixer = (
-  fixer: RuleFixer,
+  fixer: TSESLint.RuleFixer,
   context: DecoratorArrayItemsRuleContext,
-  node: ArrayExpression,
+  node: TSESTree.ArrayExpression,
   reverseSort: boolean,
-): RuleFix | null => {
-  const sourceCode = context.getSourceCode();
-  const elements = node.elements as Array<Identifier>;
+): TSESLint.RuleFix | null => {
+  const sourceCode = context.sourceCode;
+  const elements = node.elements as Array<TSESTree.Identifier>;
   const sortedElements = elements.map((el) => sourceCode.getText(el)).sort();
   if (reverseSort) sortedElements.reverse();
 

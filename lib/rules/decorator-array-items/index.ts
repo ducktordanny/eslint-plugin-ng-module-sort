@@ -1,56 +1,65 @@
-import {
-  Identifier,
-  ArrayExpression,
-  Decorator,
-} from '@typescript-eslint/types/dist/generated/ast-spec';
-import {RuleListener} from '@typescript-eslint/utils/dist/ts-eslint';
+import {TSESTree, ESLintUtils, TSESLint} from '@typescript-eslint/utils';
 
 import {orderCheck} from './order-check.util';
 import {orderFixer} from './order-fixer.util';
 
-import {DecoratorArrayItemsRuleContext, RuleOptions} from '../../types';
+import {DecoratorArrayItemsRuleContext, RuleOptions, RuleSettings} from '../../types';
 import {getKnownProperties, getPropertiesOfDecorator, ruleCreator} from '../../utils';
-import {NamedCreateRuleMeta} from '@typescript-eslint/utils/dist/eslint-utils';
 
-const name = 'decorator-array-items';
-const defaultOptions = {
-  reverseSort: false,
-  extraDecorators: [],
-  extraProperties: [],
-} as RuleOptions;
+const defaultOptions = [
+  {
+    reverseSort: false,
+    extraDecorators: [],
+    extraProperties: [],
+  },
+] satisfies RuleSettings[];
 
-const meta: NamedCreateRuleMeta<'wrongOrderOfDecoratorArrayItems'> = {
+const meta: ESLintUtils.NamedCreateRuleMeta<
+  'wrongOrderOfDecoratorArrayItems',
+  unknown,
+  RuleOptions[]
+> = {
   type: 'layout',
   docs: {
     description:
       'Checks if the Angular or NestJS module related metadata has ordered arrays, and provide an autofix to sort them.',
-    recommended: 'error',
   },
   messages: {
     wrongOrderOfDecoratorArrayItems: 'Run `eslint --fix .` to sort the members of {{ property }}.',
   },
   fixable: 'code',
-  schema: [defaultOptions],
+  defaultOptions,
+  schema: [
+    {
+      type: 'object',
+      properties: {
+        reverseSort: {type: 'boolean'},
+        extraDecorators: {type: 'array', items: {type: 'string'}},
+        extraProperties: {type: 'array', items: {type: 'string'}},
+      },
+      additionalProperties: false,
+    },
+  ],
 };
 
-function create(context: DecoratorArrayItemsRuleContext): RuleListener {
-  const options = (context?.options?.[0] || defaultOptions) as RuleOptions;
-  const reverseSort = options.reverseSort ?? defaultOptions.reverseSort;
-  const extraDecorators = options.extraDecorators || defaultOptions.extraDecorators;
-  const extraProperties = options.extraProperties || defaultOptions.extraProperties;
+function create(context: DecoratorArrayItemsRuleContext): ESLintUtils.RuleListener {
+  const {reverseSort, extraDecorators, extraProperties} = {
+    ...defaultOptions[0],
+    ...context.options[0],
+  } as RuleSettings;
 
   return {
-    Decorator(node: Decorator): void {
+    Decorator(node: TSESTree.Decorator): void {
       const properties = getPropertiesOfDecorator(node, extraDecorators);
       if (!properties) return;
 
       const knownProperties = getKnownProperties(properties, extraProperties);
       if (!knownProperties || knownProperties.length === 0) return;
 
-      knownProperties.forEach((prop) => {
-        const keyName = (prop.key as Identifier)?.name;
-        const arrayExpression = prop.value as ArrayExpression;
-        const elements = arrayExpression.elements as Array<Identifier>;
+      for (const prop of knownProperties) {
+        const keyName = (prop.key as TSESTree.Identifier)?.name;
+        const arrayExpression = prop.value as TSESTree.ArrayExpression;
+        const elements = arrayExpression.elements as Array<TSESTree.Identifier>;
         if (!elements || !elements.length) return;
         const isOrdered = orderCheck(context, elements, reverseSort);
         if (isOrdered) return;
@@ -58,19 +67,19 @@ function create(context: DecoratorArrayItemsRuleContext): RuleListener {
         context.report({
           node: arrayExpression,
           messageId: 'wrongOrderOfDecoratorArrayItems',
-          data: {
-            property: keyName,
-          },
-          fix: (fixer) => orderFixer(fixer, context, arrayExpression, reverseSort),
+          data: {property: keyName},
+          fix: (fixer: TSESLint.RuleFixer) =>
+            orderFixer(fixer, context, arrayExpression, reverseSort),
         });
-      });
+      }
     },
   };
 }
 
+export const DECORATOR_ARRAY_ITEMS_NAME = 'decorator-array-items';
 export const decoratorArrayItemsRule = ruleCreator({
-  name,
+  name: DECORATOR_ARRAY_ITEMS_NAME,
   meta,
+  defaultOptions,
   create,
-  defaultOptions: [],
 });

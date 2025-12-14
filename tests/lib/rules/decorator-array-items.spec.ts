@@ -1,5 +1,9 @@
-import {RuleTester} from '@typescript-eslint/utils/dist/ts-eslint';
-import {decoratorArrayItemsRule} from '../../../lib/rules/decorator-array-items';
+import {RuleTester} from '@typescript-eslint/rule-tester';
+
+import {
+  DECORATOR_ARRAY_ITEMS_NAME,
+  decoratorArrayItemsRule,
+} from '../../../lib/rules/decorator-array-items';
 import {
   invalidExtrasMock,
   invalidMultilineMock,
@@ -14,13 +18,12 @@ import {
   validSingleLineMock,
 } from './decorator-array-items.mock';
 
-const ruleTester = new RuleTester({
-  parser: require.resolve('@typescript-eslint/parser'),
-});
-ruleTester.run('decorator-array-items', decoratorArrayItemsRule, {
+const ruleTester = new RuleTester();
+ruleTester.run(DECORATOR_ARRAY_ITEMS_NAME, decoratorArrayItemsRule, {
   valid: [
     {
       name: 'should be fine in a single line',
+      options: [],
       code: validSingleLineMock,
     },
     {
