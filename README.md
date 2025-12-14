@@ -12,25 +12,50 @@ You'll first need to install [ESLint](https://eslint.org/):
 npm i eslint --save-dev
 ```
 
+or
+
+```sh
+yarn add --dev eslint
+```
+
 Next, install `eslint-plugin-ng-module-sort`:
 
 ```sh
 npm install eslint-plugin-ng-module-sort --save-dev
 ```
 
-## Usage
+or
 
-<!-- TODO: Update docs, e.g. don't use .eslintrc, but eslint.config.mjs -->
-
-Add `ng-module-sort` to the plugins section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-` prefix:
-
-```json
-{
-  "plugins": ["ng-module-sort"]
-}
+```sh
+yarn add --dev eslint-plugin-ng-module-sort
 ```
 
-Then configure the rules you want to use under the rules section.
+## Usage (Flat Config)
+
+Versions `1.4.0` and above officially support ESLint flat configuration.
+
+Import `eslint-plugin-ng-module-sort` in your `eslint.config.js` file, register it in `plugins`, and enable its rules using the `ng-module-sort` prefix.
+
+For example:
+
+```js
+// eslint.config.js
+const {defineConfig} = require('eslint/config');
+const ngModuleSort = require('eslint-plugin-ng-module-sort');
+
+module.exports = defineConfig([
+  {
+    // ...
+    plugins: {
+      'ng-module-sort': ngModuleSort,
+    },
+    rules: {
+      'ng-module-sort/decorator-array-items': 'error',
+      // ...
+    },
+  },
+]);
+```
 
 ## Rules
 
